@@ -1,4 +1,7 @@
-import random
+#!/usr/bin/env python3
+
+# Contains garbage code for the assignment. See quick_sort.py for proper
+# implementation
 
 
 def quick_sort(arr):
