@@ -14,3 +14,12 @@ def load_array_from_file(filename):
         for line in f:
             arr.append(int(line.rstrip()))
     return arr
+
+
+def load_tab_delimited_file(filename):
+    arr = []
+    with open(filename) as f:
+        for line in f:
+            cleanline = line.rstrip()
+            arr.append(cleanline.split("\t"))
+    return arr
