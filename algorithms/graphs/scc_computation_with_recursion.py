@@ -27,9 +27,6 @@ class Node():
     def set_leader(self, leader_id):
         self.leader = leader_id
 
-    def set_fin_time(self, fin_time):
-        self.fin_time = fin_time
-
 
 class DirectedGraph():
     """A class to represent directed graphs via the adjacency list approach.
@@ -40,7 +37,6 @@ class DirectedGraph():
         self.nodes_by_fin_time = {}
         self.length = length
         self.fin_time = 0  # counter for the finishing time
-        self.fin_time_2 = length  # counter for the finishing time
         self.leader_count = 0  # counter for the size of leader nodes
         self.scc_heapq = []  # heapq to store the ssc by size
 
@@ -88,16 +84,6 @@ class DirectedGraph():
             heapq.heappush(self.scc_heapq, (self.leader_count, node.id))
             i -= 1
 
-    # def dfs_fin_times(self, start_node_id):
-    #     stack = []
-    #     stack.append(self.nodes[start_node_id])
-
-    #     for n in stack:
-    #         n.mark_explored()
-    #         mark n explore
-    #         for e in n.edges:
-    #             add e tail to stack
-
     def dfs_fin_times(self, start_node_id):
         curr_node = self.nodes[start_node_id]
         curr_node.mark_explored()
@@ -117,24 +103,3 @@ class DirectedGraph():
                 self.dfs_leaders(e)
 
         self.leader_count += 1
-
-    def dfs_fin_times_tail(self, start_node_id):
-        curr_node = self.nodes[start_node_id]
-        curr_node.mark_explored()
-        curr_node.set_fin_time(self.fin_time_2)
-        self.fin_time_2 -= 1
-        for e in curr_node.rev_edges:
-            if not self.nodes[e].explored:
-                self.dfs_fin_times_tail(e)
-
-    def dfs_fin_times_iter(self, start_node_id):
-        stack = [self.nodes[start_node_id]]
-        while len(stack) > 0:
-            curr_node = stack.pop()
-            curr_node.mark_explored()
-            curr_node.set_fin_time(self.fin_time_2)
-            self.fin_time_2 -= 1
-            for e in curr_node.rev_edges:
-                if not self.nodes[e].explored:
-                    stack.append(self.nodes[e])
-
