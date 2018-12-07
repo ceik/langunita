@@ -88,26 +88,16 @@ class DirectedGraph():
             heapq.heappush(self.scc_heapq, (self.leader_count, node.id))
             i -= 1
 
-    # def dfs_fin_times(self, start_node_id):
-    #     stack = []
-    #     stack.append(self.nodes[start_node_id])
-
-    #     for n in stack:
-    #         n.mark_explored()
-    #         mark n explore
-    #         for e in n.edges:
-    #             add e tail to stack
-
     def dfs_fin_times(self, start_node_id):
-        curr_node = self.nodes[start_node_id]
-        curr_node.mark_explored()
-        for e in curr_node.rev_edges:
-            if not self.nodes[e].explored:
-                self.dfs_fin_times(e)
-
-        self.fin_time += 1
-        curr_node.fin_time = str(self.fin_time)
-        self.nodes_by_fin_time[str(self.fin_time)] = Node(str(self.fin_time))
+        stack = [self.nodes[start_node_id]]
+        while len(stack) > 0:
+            curr_node = stack.pop()
+            curr_node.mark_explored()
+            curr_node.set_fin_time(self.fin_time_2)
+            self.fin_time_2 -= 1
+            for e in curr_node.rev_edges:
+                if not self.nodes[e].explored:
+                    stack.append(self.nodes[e])
 
     def dfs_leaders(self, start_node_id):
         curr_node = self.nodes_by_fin_time[start_node_id]
@@ -118,6 +108,17 @@ class DirectedGraph():
 
         self.leader_count += 1
 
+    def dfs_fin_times_rec(self, start_node_id):
+        curr_node = self.nodes[start_node_id]
+        curr_node.mark_explored()
+        for e in curr_node.rev_edges:
+            if not self.nodes[e].explored:
+                self.dfs_fin_times(e)
+
+        self.fin_time += 1
+        curr_node.fin_time = str(self.fin_time)
+        self.nodes_by_fin_time[str(self.fin_time)] = Node(str(self.fin_time))
+
     def dfs_fin_times_tail(self, start_node_id):
         curr_node = self.nodes[start_node_id]
         curr_node.mark_explored()
@@ -126,15 +127,4 @@ class DirectedGraph():
         for e in curr_node.rev_edges:
             if not self.nodes[e].explored:
                 self.dfs_fin_times_tail(e)
-
-    def dfs_fin_times_iter(self, start_node_id):
-        stack = [self.nodes[start_node_id]]
-        while len(stack) > 0:
-            curr_node = stack.pop()
-            curr_node.mark_explored()
-            curr_node.set_fin_time(self.fin_time_2)
-            self.fin_time_2 -= 1
-            for e in curr_node.rev_edges:
-                if not self.nodes[e].explored:
-                    stack.append(self.nodes[e])
 
