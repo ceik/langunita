@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 
+# Bad implementation, don't use going forward.
+# See apsp/dijkstra for a better implementation for directed graphs, which can
+# probably be easily adapted to undirected graphs as well.
+
 from .priority_queue import PriorityQueue
 
 
